@@ -1,0 +1,26 @@
+spring:
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        temp:
+          use_jdbc_metadata_defaults: false
+        ddl-auto: validate
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    username: postgres
+    password: admin
+    url: jdbc:postgresql://localhost:5432/web_skeleton
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      pool-name: springmvc
+
+server:
+  port: 9000
+
+flyway:
+  baseline-on-migrate: true
+  out-of-order: true
+  validate-on-migrate: true
+  enabled: true
+
