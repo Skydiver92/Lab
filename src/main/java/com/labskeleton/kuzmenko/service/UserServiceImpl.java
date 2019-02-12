@@ -1,12 +1,12 @@
-package com.labskeleton.kuzmenko.service.impl;
+package com.labskeleton.kuzmenko.service;
 
+import com.labskeleton.kuzmenko.dao.UserRepository;
+import com.labskeleton.kuzmenko.exception.UserNotFoundException;
 import com.labskeleton.kuzmenko.model.Role;
-import com.labskeleton.kuzmenko.model.RoleList;
 import com.labskeleton.kuzmenko.model.Status;
 import com.labskeleton.kuzmenko.model.User;
-import com.labskeleton.kuzmenko.repository.UserRepository;
-import com.labskeleton.kuzmenko.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -27,43 +27,50 @@ public class UserServiceImpl implements UserService {
     @Override
     public User create(User user) {
         user.setStatus(Status.ACTIVE);
-        user.setRoles(Collections.singleton(new Role(RoleList.USER)));
+        user.setRoles(Collections.singleton(new Role("USER")));
         return userRepository.save(user);
     }
-
 
     @Override
     public List<User> getAll() {
         return userRepository.findAll();
     }
 
-
     @Override
     public User getById(Integer id) {
-        return userRepository.findById(id).orElseGet(null);
+        if (userRepository.findById(id).isPresent()) {
+            return userRepository.findById(id).get();
+        } else {
+            throw new UserNotFoundException(UserNotFoundException.NO_SUCH_USER, HttpStatus.NOT_FOUND);
+        }
     }
-
 
     @Override
-    public boolean update(User newUser, Integer id) {
-        Optional<User> userOptional = userRepository.findById(id);
-        if (!userOptional.isPresent())
-            return false;
-
-        newUser.setId(id);
-        userRepository.save(newUser);
-        return true;
+    public User getByEmail(String email) {
+        if (userRepository.findUserByEmail(email) != null) {
+            return userRepository.findUserByEmail(email);
+        } else {
+            throw new UserNotFoundException(UserNotFoundException.NO_SUCH_USER, HttpStatus.NOT_FOUND);
+        }
     }
 
+    @Override
+    public void update(User newUser, Integer id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (!userOptional.isPresent()) {
+            throw new UserNotFoundException(UserNotFoundException.NO_SUCH_USER, HttpStatus.NOT_FOUND);
+        }
+        newUser.setId(id);
+        userRepository.save(newUser);
+    }
 
     @Override
     public boolean deleteById(Integer id) {
         Optional<User> userOptional = userRepository.findById(id);
         if (!userOptional.isPresent())
-            return false;
+            throw new UserNotFoundException(UserNotFoundException.NO_SUCH_USER, HttpStatus.NOT_FOUND);
         userRepository.deleteById(id);
         return true;
-
-
     }
+
 }

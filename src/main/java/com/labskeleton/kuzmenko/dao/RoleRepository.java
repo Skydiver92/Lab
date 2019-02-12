@@ -1,4 +1,4 @@
-package com.labskeleton.kuzmenko.repository;
+package com.labskeleton.kuzmenko.dao;
 
 import com.labskeleton.kuzmenko.model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,9 +1,7 @@
 package com.labskeleton.kuzmenko.service;
 
-import com.labskeleton.kuzmenko.dto.MessageDTO;
-import com.labskeleton.kuzmenko.exception.rest.NoSuchUserException;
+import com.labskeleton.kuzmenko.exception.UserNotFoundException;
 import com.labskeleton.kuzmenko.model.User;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -13,9 +11,13 @@ public interface UserService {
 
     List<User> getAll();
 
-    User getById (Integer id);
+    User getById(Integer id) throws UserNotFoundException;
 
-    boolean update(User user, Integer id);
+    User getByEmail(String email);
+
+    void update(User user, Integer id);
 
     boolean deleteById(Integer id);
+
+
 }

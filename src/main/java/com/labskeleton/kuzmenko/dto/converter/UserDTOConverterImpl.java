@@ -1,7 +1,6 @@
-package com.labskeleton.kuzmenko.dto.converter.impl;
+package com.labskeleton.kuzmenko.dto.converter;
 
 import com.labskeleton.kuzmenko.dto.CreateUserDTO;
-import com.labskeleton.kuzmenko.dto.converter.UserDTOConverter;
 import com.labskeleton.kuzmenko.dto.UserDTO;
 import com.labskeleton.kuzmenko.model.User;
 import org.springframework.stereotype.Component;
